@@ -7,6 +7,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -17,9 +20,25 @@ import java.util.List;
 public class EarthquakeActivity extends AppCompatActivity {
 
     private String USGS_URL =
-        "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+            "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
     private EarthquakeAdapter mAdapter;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case  R.id.menu_setting :
+                startActivity(new Intent(this,SettingActivity.class));
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +62,7 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         });
 
+
     }
     private class QuakeAsyncTask extends AsyncTask<String,Void,List<Earthquake>>{
 
@@ -61,9 +81,7 @@ public class EarthquakeActivity extends AppCompatActivity {
             progressDialog.setCancelable(false);
             progressDialog.show();
             super.onPreExecute();
-
         }
-
         @Override
         protected void onPostExecute(List<Earthquake> data) {
            mAdapter.clear();
@@ -76,5 +94,6 @@ public class EarthquakeActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }

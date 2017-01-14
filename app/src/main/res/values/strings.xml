@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Earthquake Report</string>
+    <string name="action_setting">Setting</string>
+    <string name="version">V1.0</string>
+    <string name="dev">Developer </string>
+    <string name="dev_name">Deepak Kumar</string>
 </resources>
