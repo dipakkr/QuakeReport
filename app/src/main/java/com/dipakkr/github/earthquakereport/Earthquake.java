@@ -6,27 +6,29 @@ package com.dipakkr.github.earthquakereport;
 
 public class Earthquake {
 
-    private double mMagnitude;
-    private String mLocation;
-    private long mTimeInMilliseconds;
+    public final double mMagnitude;
+    public final String mLocation;
+    public final long mTimeInMilliseconds;
+    public final String mUrl;
 
-     Earthquake(double magnitude, String location, long TimeInMilliseconds) {
-        mMagnitude = magnitude;
-        mLocation = location;
-        mTimeInMilliseconds= TimeInMilliseconds;
+     Earthquake(double magnitude, String location, long TimeInMilliseconds, String Url) {
+         mMagnitude = magnitude;
+         mLocation = location;
+         mTimeInMilliseconds= TimeInMilliseconds;
+         mUrl = Url;
     }
-
-
     double getMagnitude() {
         return mMagnitude;
     }
-
     String getLocation() {
         return mLocation;
     }
-
     public long getmTimeInMilliseconds(){
         return mTimeInMilliseconds;
+    }
+
+    public String getmUrl() {
+        return mUrl;
     }
 }
 

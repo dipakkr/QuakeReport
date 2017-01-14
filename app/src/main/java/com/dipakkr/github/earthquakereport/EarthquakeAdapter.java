@@ -20,11 +20,9 @@ import java.util.List;
 
 public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
 
-
     /**
      * Constructs a new {@link EarthquakeAdapter}.
-     *
-     * @param context     of the app
+     ** @param context     of the app
      * @param earthquakes is the list of earthquakes, which is the data source of the adapter
      */
     public EarthquakeAdapter(Context context, List<Earthquake> earthquakes) {
@@ -36,8 +34,8 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
      * in the list of earthquakes.
      */
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+     @Override
+     public View getView(int position, View convertView, ViewGroup parent) {
         // Check if there is an existing list item view (called convertView) that we can reuse,
         // otherwise, if convertView is null, then inflate a new list item layout.
         View listItemView = convertView;
@@ -45,50 +43,28 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             listItemView = LayoutInflater.from(getContext()).inflate(
                     R.layout.earthquake_list_items, parent, false);
         }
-
-        // Find the earthquake at the given position in the list of earthquakes
-
         Earthquake currentEarthquake = getItem(position);
-
         TextView txtMagnitude = (TextView) listItemView.findViewById(R.id.magnitude);
-
-
         TextView txtLocation = (TextView) listItemView.findViewById(R.id.location);
         txtLocation.setText(currentEarthquake.getLocation());
 
-        TextView dateView = (TextView) listItemView.findViewById(R.id.date);
-
-        // Create a new Date object from the time in milliseconds of the earthquake
+         TextView dateView = (TextView) listItemView.findViewById(R.id.date);
         Date dateobject = new Date(currentEarthquake.getmTimeInMilliseconds());
 
-        // Format the date string (i.e. "Mar 3, 1984")
-        String formattedDate = formatDate(dateobject);
+         String formattedDate = formatDate(dateobject);
         dateView.setText(formattedDate);
 
-        // Find the TextView with view ID time
         TextView timeView = (TextView) listItemView.findViewById(R.id.time);
-
-        // Format the time string (i.e. "4:30PM")
         String formattedTime = formatTime(dateobject);
-        // Display the time of the current earthquake in that TextView
         timeView.setText(formattedTime);
 
-
-        //TODO Adding the circular background for magnitude
         GradientDrawable magnitudeCircle = (GradientDrawable) txtMagnitude.getBackground();
-
         int magnitudeColor = getMagnitudeColor(currentEarthquake.getMagnitude());
-
         String formattedMagnitude = formatMagnitude(currentEarthquake.getMagnitude());
         txtMagnitude.setText(formattedMagnitude);
-
-        // Set the color on the magnitude circle
         magnitudeCircle.setColor(magnitudeColor);
-
         return listItemView;
-
     }
-
     /**
      * Return the formatted date string (i.e. "Mar 3, 1984") from a Date object.
      */
@@ -103,20 +79,14 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
     private String formatTime(Date dateObject) {
         SimpleDateFormat timeFormat = new SimpleDateFormat("h:mm a");
         return timeFormat.format(dateObject);
-
     }
-
     private String formatMagnitude(double magnitude) {
               DecimalFormat magnitudeFormat = new DecimalFormat("0.0");
                 return magnitudeFormat.format(magnitude);
             }
-
-
     private int getMagnitudeColor(double magnitude) {
-
         int magnitudeColorResourceId;
         int magnitudeFloor = (int) Math.floor(magnitude);
-
         switch (magnitudeFloor) {
             case 1:
                 magnitudeColorResourceId = R.color.magnitude1;
@@ -145,13 +115,9 @@ public class EarthquakeAdapter extends ArrayAdapter<Earthquake> {
             case 9:
                 magnitudeColorResourceId = R.color.magnitude9;
                 break;
-
             default:
                 magnitudeColorResourceId = R.color.colorPrimaryDark;
         }
         return ContextCompat.getColor(getContext(), magnitudeColorResourceId);
-
-
-
     }
 }
