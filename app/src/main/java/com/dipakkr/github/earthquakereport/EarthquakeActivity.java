@@ -1,5 +1,7 @@
 package com.dipakkr.github.earthquakereport;
 
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -8,7 +10,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,8 @@ public class EarthquakeActivity extends AppCompatActivity {
     }
     private class QuakeAsyncTask extends AsyncTask<String,Void,List<Earthquake>>{
 
+        private ProgressDialog progressDialog;
+
         @Override
         protected List<Earthquake> doInBackground(String... strings) {
             List<Earthquake> result = QueryUtils.fetchWeatherData(USGS_URL);
@@ -52,8 +55,21 @@ public class EarthquakeActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(EarthquakeActivity.this);
+            progressDialog.setMessage("Loading...");
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            super.onPreExecute();
+
+        }
+
+        @Override
         protected void onPostExecute(List<Earthquake> data) {
            mAdapter.clear();
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
 
             if (data != null && !data.isEmpty()){
                 mAdapter.addAll(data);
