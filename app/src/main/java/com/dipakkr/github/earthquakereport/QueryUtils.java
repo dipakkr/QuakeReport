@@ -1,5 +1,6 @@
 package com.dipakkr.github.earthquakereport;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.MalformedJsonException;
 
@@ -104,10 +105,13 @@ public final class QueryUtils {
             }
             return output.toString();
         }
-    private static List<Earthquake> extractEarthquakes(String earthJson){
+    private static List<Earthquake> extractEarthquakes(String earthquakeJSON){
+        if (TextUtils.isEmpty(earthquakeJSON)) {
+            return null;
+        }
         ArrayList<Earthquake>  earthquakes = new ArrayList<>();
         try {
-            JSONObject baseJsonResponse = new JSONObject(earthJson);
+            JSONObject baseJsonResponse = new JSONObject(earthquakeJSON);
             JSONArray featureArray = baseJsonResponse.getJSONArray("features");
 
             for (int i = 0; i < featureArray.length(); i++) {

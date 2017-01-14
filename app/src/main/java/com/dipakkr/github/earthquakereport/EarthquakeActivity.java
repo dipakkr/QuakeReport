@@ -18,25 +18,30 @@ public class EarthquakeActivity extends AppCompatActivity {
     private String USGS_URL =
         "http://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
 
+    private EarthquakeAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_earthquake);
 
-        ArrayList<Earthquake> earthquakes = new ArrayList<>();
+        QuakeAsyncTask task = new QuakeAsyncTask();
+        task.execute(USGS_URL);
+
         final ListView earthquakeListView = (ListView)findViewById(R.id.list);
-        final EarthquakeAdapter adapter = new EarthquakeAdapter(this,earthquakes);
-        earthquakeListView.setAdapter(adapter);
+        mAdapter = new EarthquakeAdapter(this, new ArrayList<Earthquake>());
+        earthquakeListView.setAdapter(mAdapter);
 
         earthquakeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Earthquake earthquake = adapter.getItem(i);
+                Earthquake earthquake = mAdapter.getItem(i);
                 Uri earthquakeUri = Uri.parse(earthquake.getmUrl());
                 Intent webIntent = new Intent(Intent.ACTION_VIEW,earthquakeUri);
                 startActivity(webIntent);
             }
         });
+
     }
     private class QuakeAsyncTask extends AsyncTask<String,Void,List<Earthquake>>{
 
@@ -47,19 +52,13 @@ public class EarthquakeActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(List<Earthquake> earthquakes) {
-            if( earthquakes == null){
-                return ;
+        protected void onPostExecute(List<Earthquake> data) {
+           mAdapter.clear();
+
+            if (data != null && !data.isEmpty()){
+                mAdapter.addAll(data);
             }
-            updateUi(earthquakes);
         }
     }
-    private void updateUi(List<Earthquake> earthquakes){
-        TextView mag = (TextView)findViewById(R.id.magnitude);
-        TextView loc = (TextView)findViewById(R.id.location);
-        TextView date = (TextView)findViewById(R.id.date);
-        TextView time = (TextView)findViewById(R.id.time);
 
-
-    }
 }
