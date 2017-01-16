@@ -5,3 +5,4 @@ EarthQuake Report Project of Udacity Android Developer course
 ![alt-tag](docs/screenshots/ss2.png)       ![alt-tag](docs/screenshots/ss4.png)
 
 
+New Changes
